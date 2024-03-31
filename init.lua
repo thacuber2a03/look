@@ -64,7 +64,7 @@ end
 
 local function is_color(v) return v >= 30 and v <= 50 or v >= 80 and v <= 100 end
 
-function disp_attrib(a)
+function disp_attrib.new(a)
 	do
 		local t = type(a)
 		assert(not a or t == "number" or t == "table", "expected a list of attributes, a single attribute, or nothing")
