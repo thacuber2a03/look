@@ -53,7 +53,9 @@ look.disp_attrib = disp_attrib
 
 function disp_attrib:__index(k)
 	if type(k) == "number" then return self.attributes[k] end
-	return self[k] or rawget(disp_attrib, k)
+	local v = self[k]
+	if v ~= nil then return v end
+	return rawget(disp_attrib, k)
 end
 
 function disp_attrib:__newindex(k, v)
