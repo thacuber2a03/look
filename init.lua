@@ -71,7 +71,7 @@ function disp_attrib.new(a)
 		if t ~= "table" then a = {a} end
 	end
 
-	local self = setmetatable({}, disp_attrib)
+	local self = {}
 
 	self.attributes = a
 	self.has_color = false
@@ -92,7 +92,7 @@ function disp_attrib.new(a)
 
 	self.code = escapefmt:format(attrib_str)
 
-	return self
+	return setmetatable(self, disp_attrib)
 end
 
 function disp_attrib.instance(v) return type(v) == "table" and getmetatable(v) == disp_attrib end
