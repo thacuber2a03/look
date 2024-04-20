@@ -19,7 +19,7 @@
 -- SOFTWARE.
 
 local look = {}
-look.version = "0.1"
+look.version = "1.0"
 
 local escapefmt = string.char(0x1b) .. "[%sm"
 
