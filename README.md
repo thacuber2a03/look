@@ -13,6 +13,10 @@ a small Lua library for printing colorful strings using ANSI escape codes.
 
 - [reference](doc/ref.md)
 
+## testing
+
+tests must be run using the [busted]() testing framework. head over to the `tests/` folder, and run `busted main.lua`
+
 ## contributing
 
 bug reports and issues are more than welcome. please don't make pull requests too big; otherwise they might not be merged.
