@@ -192,7 +192,7 @@ do
 	attr.strike = disp_attrib(9)
 
 	attr.double_underline = disp_attrib(21)
-	attr.nobold = attr.doubleul
+	attr.nobold = attr.double_underline
 	attr.noblink = disp_attrib(25)
 	attr.noinvert = disp_attrib(27)
 	attr.reveal = disp_attrib(28)
