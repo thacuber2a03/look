@@ -11,7 +11,7 @@ a small Lua library for printing colorful strings using ANSI escape codes.
 
 ### `look.version`
 
-the version of the library, as a SemVer string.
+the version of the library, as [SemVer](https://semver.org/) string.
 
 ### `look.config(opts)`
 
