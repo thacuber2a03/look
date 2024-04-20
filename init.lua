@@ -203,7 +203,6 @@ do
 	for i = 1, 9 do
 		attr["font" .. i] = disp_attrib(10 + i)
 	end
-	attr.gothic = disp_attrib(20)
 
 	local col = look.colors
 	col.black = disp_attrib(30)

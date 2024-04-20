@@ -42,7 +42,10 @@ these are all available attributes:
 | `blink`/`slowblink` | sets blinking to less than 150 times per minute |
 | `fastblink` | MS-DOS ANSI.SYS, 150+ per minute; not widely supported |
 | `invert` | swap fg and bg colors, inconsistent emulation |
-| `conceal`/`hide` | not widely supported |
+| `conceal`/`hide` | not widely supported, added it because it looked interesting |
+| `strike` | strikethrough, not supported in Terminal.app |
+| `default_font` | |
+| `font1` to `font9` | alternative fonts |
 
 sourced from [Wikpedia](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_(Select_Graphic_Rendition)_parameters).
 
