@@ -20,7 +20,7 @@ print(string.format("%s %s %s", look.red + "welcome", look.yellow + " to ", look
 
 ## testing
 
-tests must be run using the [busted]() testing framework. head over to the `tests/` folder, and run `busted main.lua`
+tests must be run using the [busted](https://lunarmodules.github.io/busted/) testing framework. head over to the `tests/` folder, and run `busted main.lua`
 
 ## contributing
 
