@@ -16,7 +16,7 @@ currently available keys are:
 |:---:|:-------:|:------------|
 |`color`| `false` | toggle color capabilities on or off. default: off |
 | `replace_italic` | `false`[^italic] | some terminals don't support italic formatting. this value specifies the code to replace italic codes for. |
-| `format_reset` | `false` | after formatting a string using `look.format`, whether to insert a `normal`/`reset` attribute at the end. see `look.attributes`. |
+| `format_reset` | `true` | after formatting a string using `look.format`, whether to insert a `normal`/`reset` attribute at the end. see `look.attributes`. |
 
 ### `look.attributes`/`look.colors`
 

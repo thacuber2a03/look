@@ -26,7 +26,7 @@ local escapefmt = string.char(0x1b) .. "[%sm"
 local config = {
 	color = false,
 	replace_italic = false,
-	format_reset = false,
+	format_reset = true,
 }
 
 function look.config(t)
