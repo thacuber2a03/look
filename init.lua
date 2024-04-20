@@ -82,9 +82,12 @@ function disp_attrib.new(a)
 	local attrib_str = ""
 
 	for i, v in ipairs(self.attributes) do
-		if v == 3 and config.replace_italic then
+		if v == 0 then
+			attrib_str = ""
+			break
+		elseif v == 3 and config.replace_italic then
 			attrib_str = attrib_str .. look[config.replace_italic]
-		elseif v ~= 0 then
+		else
 			attrib_str = attrib_str .. v
 		end
 

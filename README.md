@@ -30,6 +30,21 @@ currently available keys are:
 
 these tables hold the `disp_attrib`s for various formatting styles and colors. `disp_attrib`s are described later.
 
+available attributes:
+| attribute | description |
+|:---------:|:------------|
+| `normal`/`reset` | All attributes turn off. |
+
+sourced from [Wikpedia](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_(Select_Graphic_Rendition)_parameters).
+
+### `look.colors.from_rgb(r, g, b)` and `look.colors.bg_from_rgb(r, g, b)`
+
+utility functions that make a color based on 24-bit red, green and blue components.
+
+### `look.colors.from_index(i)`
+
+utility function that makes a color based on an 8-bit index to [a pre-defined 256-color palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit).
+
 ## `disp_attrib`
 
 `disp_attrib` objects are the underlying objects that control the most part of the library. they can be added to strings or other disp_attribs to concatenate their attributes. they're exposed through the root of the library: `look.disp_attrib`
@@ -78,7 +93,7 @@ exactly the same as `str + disp_attrib_obj`.
 
 ### `disp_attrib:no_color()`
 
-makes a copy of this `disp_attrib` with all the colors removed.
+makes a copy of this `disp_attrib` with all the color parameters removed.
 
 ### `disp_attrib:escaped()`
 
