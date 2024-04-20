@@ -58,19 +58,7 @@ local disp_attrib = setmetatable({}, {
 	end,
 })
 look.disp_attrib = disp_attrib
-
-function disp_attrib:__index(k)
-	if type(k) == "number" then return self.attributes[k] end
-	local v = self[k]
-	if v ~= nil then return v end
-	return rawget(disp_attrib, k)
-end
-
-function disp_attrib:__newindex(k, v)
-	local t = type(k)
-	if t == "number" then self.attributes[k] = v end
-	error("attempt to index a display attribute with a " .. t)
-end
+disp_attrib.__index = disp_attrib
 
 local function is_color(v)
 	return v >= 30 and v <= 50 or v >= 80 and v <= 100
@@ -110,12 +98,12 @@ function disp_attrib.new(a)
 	return setmetatable(self, disp_attrib)
 end
 
-function disp_attrib.instance(v)
+function disp_attrib.is_instance(v)
 	return type(v) == "table" and getmetatable(v) == disp_attrib
 end
 
 function disp_attrib:escaped()
-	return (self.code:gsub("\x1b", "<esc>"))
+	return (self.code:gsub(string.char(0x1b), "<esc>"))
 end
 
 function disp_attrib:no_color()
@@ -136,7 +124,7 @@ function disp_attrib:no_color()
 					end
 				end
 			else
-				res[i] = a
+				res.attributes[i] = a
 			end
 		end
 	end
@@ -149,14 +137,14 @@ function disp_attrib:__call(other)
 end
 
 function disp_attrib:__add(other)
-	if not disp_attrib.instance(self) then
+	if not disp_attrib.is_instance(self) then
 		if not config.color and other.has_color then
-			return self .. other:no_color().code
+			return self + other:no_color()
 		end
 		return self .. other.code
 	elseif type(other) == "string" then
 		if not config.color and self.has_color then
-			return self:no_color().code + other
+			return self:no_color() + other
 		end
 		return self.code .. other
 	elseif type(other) == "number" then
@@ -166,7 +154,7 @@ function disp_attrib:__add(other)
 		end
 		res[#res + 1] = other
 		return disp_attrib(res)
-	elseif disp_attrib.instance(other) then
+	elseif disp_attrib.is_instance(other) then
 		local res = {}
 		for i = 1, #self.attributes do
 			res[#res + 1] = self.attributes[i]
@@ -224,10 +212,10 @@ do
 	col.default = disp_attrib(39)
 
 	for k, v in pairs(col) do
-		col["bright_" .. k] = disp_attrib(v[1] + 60)
+		col["bright_" .. k] = disp_attrib(v.attributes[1] + 60)
 	end
 	for k, v in pairs(col) do
-		col["bg_" .. k] = disp_attrib(v[1] + 10)
+		col["bg_" .. k] = disp_attrib(v.attributes[1] + 10)
 	end
 
 	-- these don't exist
