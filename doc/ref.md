@@ -78,7 +78,9 @@ utility function that makes a color based on an 8-bit index to [a pre-defined 25
 ### `look.format(format_str)`
 
 > [!WARNING]
-> this function currently doesn't work right, and I'm figuring out why. in the meantime, please concatenate attributes/colors.
+> this function currently doesn't work with more than one attribute marker,
+> and I'm suspecting it's due to using a bunch of `string.find`s. I'll replace
+> them with a proper parser, but in the meantime, please concatenate attributes/colors.
 
 takes in a string, where attributes are represented using `%attr1, attr2, attr3%`, and returns a string with all those formats applied. if any formats were applied, it appends a `normal`/`reset` code at the end, unless `config.format_reset` is unset.
 
