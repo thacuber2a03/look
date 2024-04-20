@@ -6,7 +6,7 @@ a small Lua library for printing colorful strings using ANSI escape codes.
 
 - implemented in around 300 loc of pure Lua
 - elegant operator overloading: you literally add attributes to strings
-- smart representation of escape codes under a `disp_attrib` object; deals with optimization and color filtering
+- smart representation of escape codes under a [`disp_attrib`](doc/ref.md#disp_attrib) object; deals with optimization and color filtering
 - covers most supported ANSI escape codes, and some more obscure ones
 
 ## documentation
