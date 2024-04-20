@@ -47,6 +47,8 @@ these are all available attributes:
 | `default_font` | |
 | `font1` to `font9` | alternative fonts |
 | `double_underline`/`nobold` | double underline per ECMA-48, but instead disables bold intensity on several terminals |
+| `noblink` | disables blinking |
+
 
 sourced from [Wikpedia](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_(Select_Graphic_Rendition)_parameters).
 

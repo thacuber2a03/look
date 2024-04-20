@@ -192,12 +192,13 @@ do
 	attr.strike = disp_attrib(9)
 
 	attr.double_underline = disp_attrib(21)
-	attr.nobold = attr.double_underline
-	attr.noblink = disp_attrib(25)
-	attr.noinvert = disp_attrib(27)
+	attr.no_bold = attr.double_underline
+	attr.no_underline = disp_attrib(24)
+	attr.no_blink = disp_attrib(25)
+	attr.no_invert = disp_attrib(27)
 	attr.reveal = disp_attrib(28)
-	attr.noconceal = attr.reveal
-	attr.nostrike = disp_attrib(29)
+	attr.no_conceal = attr.reveal
+	attr.no_strike = disp_attrib(29)
 
 	attr.default_font = disp_attrib(10)
 	for i = 1, 9 do
