@@ -188,6 +188,7 @@ do
 	attr.fastblink = disp_attrib(6)
 	attr.invert = disp_attrib(7)
 	attr.conceal = disp_attrib(8)
+	attr.hide = attr.conceal
 	attr.strike = disp_attrib(9)
 
 	attr.double_underline = disp_attrib(21)

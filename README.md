@@ -19,8 +19,8 @@ used to change configuration options of the library. an unexpected value for `op
 
 currently available keys are:
 
-| key |default| desc |
-|:---:|:-----:|:-----|
+| key | default | description |
+|:---:|:-------:|:------------|
 |`color`| `false` | toggle color capabilities on or off. default: off |
 | `replace_italic` | `false`[^italic] | some terminals don't support italic formatting. this value specifies the code to replace italic codes for. |
 
@@ -30,11 +30,19 @@ currently available keys are:
 
 these tables hold the `disp_attrib`s for various formatting styles and colors. `disp_attrib`s are described later.
 
-available attributes:
-| attribute | description |
-|:---------:|:------------|
-| `normal`/`reset` | All attributes turn off. |
+these are all available attributes:
 
+| attribute | description/notes |
+|:---------:|:------------|
+| `normal`/`reset` | all attributes turn off |
+| `faint`/`dim` | decreased intensity |
+| `bold` | increased intensity |
+| `italic` | italic font; not widely supported, see `look.config(opts)` |
+| `underline` | underline font |
+| `blink`/`slowblink` | sets blinking to less than 150 times per minute |
+| `fastblink` | MS-DOS ANSI.SYS, 150+ per minute; not widely supported |
+| `invert` | swap fg and bg colors, inconsistent emulation |
+| `conceal`/`hide` | not widely supported |
 
 sourced from [Wikpedia](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_(Select_Graphic_Rendition)_parameters).
 
