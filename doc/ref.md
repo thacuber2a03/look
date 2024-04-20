@@ -4,7 +4,7 @@
 
 ### `look.version`
 
-the version of the library, as [SemVer](https://semver.org/) string.
+the version of the library, as a [SemVer](https://semver.org/) string.
 
 ### `look.config(opts)`
 

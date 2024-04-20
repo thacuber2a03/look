@@ -48,8 +48,8 @@ look.attributes = {}
 look.colors = {}
 
 setmetatable(look, {
-	__index = function(_, k)
-		return look.attributes[k] or look.colors[k]
+	__index = function(t, k)
+		return t.attributes[k] or t.colors[k] or rawget(t, k)
 	end,
 })
 

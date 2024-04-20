@@ -2,6 +2,11 @@
 
 a small Lua library for printing colorful strings using ANSI escape codes.
 
+```lua
+local look = require 'look'
+print(string.format("%s %s %s", look.red + "welcome", look.yellow + " to ", look.green + "look!"))
+```
+
 ### overview
 
 - implemented in around 300 loc of pure Lua, compatible with versions 5.4 to 5.1 and LuaJIT
