@@ -86,7 +86,8 @@ TODO: better description
 
 ```lua
 local text = look.format "this is %bold%bold text!!" --> this is **bold text!!**
-local err = look.format("%bold, red%(line "..line..", col "..col..") "..message.."\n") --> "(line <line>, col <col>) <message>\n", in bold and red
+local err = look.format("%bold, red%(line "..line..", col "..col..") "..message.."\n")
+--> "(line <line>, col <col>) <message>\n", in bold and red
 ```
 
 ## `disp_attrib`
