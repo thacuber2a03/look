@@ -30,11 +30,11 @@ local config = {
 
 function look.config(t)
 	if t == nil then return config end
-	assert(type(t) == "table", "unexpected value '"..tostring(t).."'")
+	assert(type(t) == "table", "unexpected value '" .. tostring(t) .. "'")
 
 	for k, v in pairs(t) do
 		if type(k) ~= "string" then
-			error("unexpected key type: "..tostring(k))
+			error("unexpected key type: " .. tostring(k))
 		end
 
 		if config[k] ~= nil and v ~= nil and config[k] ~= v then
@@ -46,9 +46,17 @@ end
 look.attributes = {}
 look.colors = {}
 
-setmetatable(look, { __index = function(_, k) return look.attributes[k] or look.colors[k] end })
+setmetatable(look, {
+	__index = function(_, k)
+		return look.attributes[k] or look.colors[k]
+	end,
+})
 
-local disp_attrib = setmetatable({}, { __call = function(cls, ...) return cls.new(...) end })
+local disp_attrib = setmetatable({}, {
+	__call = function(cls, ...)
+		return cls.new(...)
+	end,
+})
 look.disp_attrib = disp_attrib
 
 function disp_attrib:__index(k)
@@ -64,13 +72,18 @@ function disp_attrib:__newindex(k, v)
 	error("attempt to index a display attribute with a " .. t)
 end
 
-local function is_color(v) return v >= 30 and v <= 50 or v >= 80 and v <= 100 end
+local function is_color(v)
+	return v >= 30 and v <= 50 or v >= 80 and v <= 100
+end
 
 function disp_attrib.new(a)
 	do
 		local t = type(a)
-		assert(not a or t == "number" or t == "table", "expected a list of attributes, a single attribute, or nothing")
-		if t ~= "table" then a = {a} end
+		assert(
+			not a or t == "number" or t == "table",
+			"expected a list of attributes, a single attribute, or nothing"
+		)
+		if t ~= "table" then a = { a } end
 	end
 
 	local self = {}
@@ -80,7 +93,7 @@ function disp_attrib.new(a)
 
 	local attrib_str = ""
 
-	for i,v in ipairs(self.attributes) do
+	for i, v in ipairs(self.attributes) do
 		if v == 3 and config.replace_italic then
 			attrib_str = attrib_str .. look[config.replace_italic]
 		elseif v ~= 0 then
@@ -89,7 +102,7 @@ function disp_attrib.new(a)
 
 		if is_color(v) then self.has_color = true end
 
-		if i ~= #self.attributes then attrib_str = attrib_str .. ';' end
+		if i ~= #self.attributes then attrib_str = attrib_str .. ";" end
 	end
 
 	self.code = escapefmt:format(attrib_str)
@@ -97,11 +110,15 @@ function disp_attrib.new(a)
 	return setmetatable(self, disp_attrib)
 end
 
-function disp_attrib.instance(v) return type(v) == "table" and getmetatable(v) == disp_attrib end
+function disp_attrib.instance(v)
+	return type(v) == "table" and getmetatable(v) == disp_attrib
+end
 
-function disp_attrib:escaped() return (self.code:gsub("\x1b", "<esc>")) end
+function disp_attrib:escaped()
+	return (self.code:gsub("\x1b", "<esc>"))
+end
 
-function disp_attrib:nocolor()
+function disp_attrib:no_color()
 	local res = disp_attrib()
 	local skip = 0
 
@@ -111,9 +128,11 @@ function disp_attrib:nocolor()
 		else
 			if is_color(a) then
 				if a == 38 or a == 48 then
-					local id = self.attributes[i+1]
-					if id == 2 then skip = 5
-					elseif id == 5 then skip = 3
+					local id = self.attributes[i + 1]
+					if id == 2 then
+						skip = 5
+					elseif id == 5 then
+						skip = 3
 					end
 				end
 			else
@@ -125,93 +144,109 @@ function disp_attrib:nocolor()
 	return res
 end
 
-function disp_attrib:__call(other) return other + self end
+function disp_attrib:__call(other)
+	return other + self
+end
 
 function disp_attrib:__add(other)
 	if not disp_attrib.instance(self) then
 		if not config.color and other.has_color then
-			return self .. other:nocolor().code
+			return self .. other:no_color().code
 		end
 		return self .. other.code
-
 	elseif type(other) == "string" then
 		if not config.color and self.has_color then
-			return self:nocolor().code + other
+			return self:no_color().code + other
 		end
 		return self.code .. other
-
 	elseif type(other) == "number" then
 		local res = {}
-		for i=1, #self.attributes do res[#res+1] = self.attributes[i] end
-		res[#res+1] = other
+		for i = 1, #self.attributes do
+			res[#res + 1] = self.attributes[i]
+		end
+		res[#res + 1] = other
 		return disp_attrib(res)
-
 	elseif disp_attrib.instance(other) then
 		local res = {}
-		for i=1, #self.attributes do res[#res+1] = self.attributes[i] end
-		for i=1, #other.attributes do res[#res+1] = other.attributes[i] end
+		for i = 1, #self.attributes do
+			res[#res + 1] = self.attributes[i]
+		end
+		for i = 1, #other.attributes do
+			res[#res + 1] = other.attributes[i]
+		end
 		return disp_attrib(res)
-
 	else
-		error("attempt to concatenate display attribute with "..type(other))
+		error("attempt to concatenate display attribute with " .. type(other))
 	end
 end
 
-function disp_attrib:__tostring() return self.code end
+function disp_attrib:__tostring()
+	return self.code
+end
 
 do
 	local attr = look.attributes
-	attr.normal           = disp_attrib(0)
-	attr.reset            = attr.normal
-	attr.bold             = disp_attrib(1)
-	attr.dim              = disp_attrib(2)
-	attr.italic           = disp_attrib(3)
-	attr.underline        = disp_attrib(4)
-	attr.blink            = disp_attrib(5)
-	attr.fastblink        = disp_attrib(6)
-	attr.invert           = disp_attrib(7)
-	attr.conceal          = disp_attrib(8)
-	attr.strike           = disp_attrib(9)
+	attr.normal = disp_attrib(0)
+	attr.reset = attr.normal
+	attr.bold = disp_attrib(1)
+	attr.dim = disp_attrib(2)
+	attr.italic = disp_attrib(3)
+	attr.underline = disp_attrib(4)
+	attr.blink = disp_attrib(5)
+	attr.fastblink = disp_attrib(6)
+	attr.invert = disp_attrib(7)
+	attr.conceal = disp_attrib(8)
+	attr.strike = disp_attrib(9)
 
 	attr.double_underline = disp_attrib(21)
-	attr.nobold           = attr.doubleul
-	attr.noblink          = disp_attrib(25)
-	attr.noinvert         = disp_attrib(27)
-	attr.reveal           = disp_attrib(28)
-	attr.noconceal        = attr.reveal
-	attr.nostrike         = disp_attrib(29)
+	attr.nobold = attr.doubleul
+	attr.noblink = disp_attrib(25)
+	attr.noinvert = disp_attrib(27)
+	attr.reveal = disp_attrib(28)
+	attr.noconceal = attr.reveal
+	attr.nostrike = disp_attrib(29)
 
 	attr.default_font = disp_attrib(10)
-	for i=1, 9 do
-		attr["font"..i] = disp_attrib(10+i)
+	for i = 1, 9 do
+		attr["font" .. i] = disp_attrib(10 + i)
 	end
-	attr.gothic       = disp_attrib(20)
+	attr.gothic = disp_attrib(20)
 
 	local col = look.colors
-	col.black   = disp_attrib(30)
-	col.red     = disp_attrib(31)
-	col.green   = disp_attrib(32)
-	col.yellow  = disp_attrib(33)
-	col.blue    = disp_attrib(34)
+	col.black = disp_attrib(30)
+	col.red = disp_attrib(31)
+	col.green = disp_attrib(32)
+	col.yellow = disp_attrib(33)
+	col.blue = disp_attrib(34)
 	col.magenta = disp_attrib(35)
-	col.cyan    = disp_attrib(36)
-	col.white   = disp_attrib(37)
+	col.cyan = disp_attrib(36)
+	col.white = disp_attrib(37)
 	col.default = disp_attrib(39)
 
-	for k,v in pairs(col) do col["bright_"..k] = disp_attrib(v[1] + 60) end
-	for k,v in pairs(col) do col["bg_"..k]     = disp_attrib(v[1] + 10) end
+	for k, v in pairs(col) do
+		col["bright_" .. k] = disp_attrib(v[1] + 60)
+	end
+	for k, v in pairs(col) do
+		col["bg_" .. k] = disp_attrib(v[1] + 10)
+	end
 
 	-- these don't exist
 	col.bright_default = nil
 	col.bg_bright_default = nil
 
-	col.from_rgb = function(r, g, b) return disp_attrib{38, 2, r, g, b} end
-	col.bg_from_rgb = function(r, g, b) return disp_attrib{48, 2, r, g, b} end
-	col.from_index = function(i) return disp_attrib{38, 2, i} end
+	col.from_rgb = function(r, g, b)
+		return disp_attrib { 38, 2, r, g, b }
+	end
+	col.bg_from_rgb = function(r, g, b)
+		return disp_attrib { 48, 2, r, g, b }
+	end
+	col.from_index = function(i)
+		return disp_attrib { 38, 2, i }
+	end
 end
 
 function look.format(str)
-	assert(type(str) == "string", "expected string, got "..type(str))
+	assert(type(str) == "string", "expected string, got " .. type(str))
 
 	local res = ""
 	local i = 1
@@ -220,31 +255,31 @@ function look.format(str)
 	while i <= #str do
 		local c = str:sub(i, i)
 
-		if c == '%' then
-			local mstart = i+1
+		if c == "%" then
+			local mstart = i + 1
 			i = i + 1
-			while str:sub(i, i) ~= '%' do
+			while str:sub(i, i) ~= "%" do
 				if i > #str then
-					error("unclosed attribute marker at position "..i)
+					error("unclosed attribute marker at position " .. i)
 				end
 				i = i + 1
 			end
-			local mend = i-1
+			local mend = i - 1
 
 			if mstart >= mend then
 				res = res .. c
 			else
 				local attrs = {}
 				for m in string.gmatch(str:sub(mstart, mend), "[^%s,]+") do
-					attrs[#attrs+1] = m
+					attrs[#attrs + 1] = m
 				end
 
 				local final
-				for j=1, #attrs do
+				for j = 1, #attrs do
 					local name = attrs[j]
 					local attr = look[name]
 					if not attr then
-						error("invalid attribute name '"..name.."'")
+						error("invalid attribute name '" .. name .. "'")
 					end
 					final = final and (final + attr) or attr
 				end
