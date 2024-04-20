@@ -10,7 +10,7 @@ the version of the library, as a [SemVer](https://semver.org/) string.
 
 used to change configuration options of the library. an unexpected value for `opts` or invalid/nonexistant keys will throw an error.
 
-currently available keys are:
+available keys:
 
 | key | default | description |
 |:---:|:-------:|:------------|
@@ -78,7 +78,7 @@ utility function that makes a color based on an 8-bit index to [a pre-defined 25
 ### `look.format(format_str)`
 
 > [!WARNING]
-> this function doesn't currently work, and I'm figuring out why. in the meantime, please concatenate attributes/colors.
+> this function currently doesn't work right, and I'm figuring out why. in the meantime, please concatenate attributes/colors.
 
 takes in a string, where attributes are represented using `%attr1, attr2, attr3%`, and returns a string with all those formats applied. if any formats were applied, it appends a `normal`/`reset` code at the end, unless `config.format_reset` is unset.
 
