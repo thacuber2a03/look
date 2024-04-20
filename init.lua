@@ -181,6 +181,7 @@ do
 	attr.reset = attr.normal
 	attr.bold = disp_attrib(1)
 	attr.dim = disp_attrib(2)
+	attr.faint = attr.dim
 	attr.italic = disp_attrib(3)
 	attr.underline = disp_attrib(4)
 	attr.blink = disp_attrib(5)

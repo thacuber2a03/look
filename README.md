@@ -35,6 +35,7 @@ available attributes:
 |:---------:|:------------|
 | `normal`/`reset` | All attributes turn off. |
 
+
 sourced from [Wikpedia](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_(Select_Graphic_Rendition)_parameters).
 
 ### `look.colors.from_rgb(r, g, b)` and `look.colors.bg_from_rgb(r, g, b)`
