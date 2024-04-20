@@ -26,6 +26,7 @@ local escapefmt = string.char(0x1b) .. "[%sm"
 local config = {
 	color = false,
 	replace_italic = false,
+	format_reset = false,
 }
 
 function look.config(t)
@@ -286,7 +287,7 @@ function look.format(str)
 		i = i + 1
 	end
 
-	if didformat then res = look.normal(res) end
+	if didformat and config.format_reset then res = look.normal(res) end
 	return res
 end
 

@@ -7,13 +7,13 @@ a small Lua library for printing colorful strings using ANSI escape codes.
 - smart representation of escape codes under a `disp_attrib` object; deals with optimization and color filtering
 - covers most supported ANSI escape codes, and some more obscure ones
 
-## quick docs
+## docs
 
-- `look.version`
+### `look.version`
 
-the version of the library, as a semver string.
+the version of the library, as a SemVer string.
 
-- `look.config(opts)`
+### `look.config(opts)`
 
 used to change configuration options of the library. an unexpected value for `opts` or invalid/nonexistant keys will throw an error.
 
@@ -23,6 +23,7 @@ currently available keys are:
 |:---:|:-------:|:------------|
 |`color`| `false` | toggle color capabilities on or off. default: off |
 | `replace_italic` | `false`[^italic] | some terminals don't support italic formatting. this value specifies the code to replace italic codes for. |
+| `format_reset` | `false` | after formatting a string using `look.format`, whether to insert a `normal`/`reset` attribute at the end. see `look.attributes`. |
 
 [^italic]: italic isn't replaced by default since most modern terminals have support for italic, it's usually only ttys or really simple terminals who don't. this is bound to change, however.
 
@@ -30,7 +31,7 @@ currently available keys are:
 
 these tables hold the `disp_attrib`s for various formatting styles and colors. `disp_attrib`s are described later.
 
-these are all available attributes:
+available attributes: [^attribs]
 
 | attribute | description/notes |
 |:---------:|:------------|
@@ -46,11 +47,36 @@ these are all available attributes:
 | `strike` | strikethrough, not supported in Terminal.app |
 | `default_font` | |
 | `font1` to `font9` | alternative fonts |
-| `double_underline`/`nobold` | double underline per ECMA-48, but instead disables bold intensity on several terminals |
-| `noblink` | disables blinking |
+| `double_underline`/`no_bold` | double underline per ECMA-48, but instead disables bold intensity on several terminals |
+| `no_blink` | disables blinking |
+| `no_invert` | |
+| `no_underline` | disables both single and double underline |
+| `no_conceal`/`reveal` | |
+| `no_strike` | no strikethrough |
 
+[^attribs]: sourced from [Wikpedia](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_(Select_Graphic_Rendition)_parameters).
 
-sourced from [Wikpedia](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_(Select_Graphic_Rendition)_parameters).
+colors available:
+
+- `black`
+- `red`
+- `green`
+- `yellow`
+- `blue`
+- `magenta`
+- `cyan`
+- `white`
+- `default`, resets the color
+
+every variant has a `bg`, `bright` and `bg_bright` variant:
+```lua
+print(look.colors.red) --> sets foreground red
+print(look.colors.bg_black) --> sets background black
+print(look.colors.bright_yellow) --> sets foreground to a bright yellow
+print(look.colors.bg_bright_cyan) --> sets background to a bright cyan
+```
+
+all of these values can be accessed through the look table itself: `look.red`, `look.bright_green`
 
 ### `look.colors.from_rgb(r, g, b)` and `look.colors.bg_from_rgb(r, g, b)`
 
@@ -60,9 +86,24 @@ utility functions that make a color based on 24-bit red, green and blue componen
 
 utility function that makes a color based on an 8-bit index to [a pre-defined 256-color palette](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit).
 
+### `look.format(format_str)`
+
+takes in a string, where attributes are represented using `%attr1, attr2, attr3%`, and returns a string with all those formats applied. if any formats were applied, it appends a `normal`/`reset` code at the end, unless `config.format_reset` is unset.
+
+TODO: better description
+
+```lua
+local text = look.format "this is %bold%bold text!!" --> this is **bold text!!**
+local err = look.format("%bold, red%(line "..line..", col "..col..") "..message.."\n") --> "(line <line>, col <col>) <message>\n", in bold and red
+```
+
 ## `disp_attrib`
 
-`disp_attrib` objects are the underlying objects that control the most part of the library. they can be added to strings or other disp_attribs to concatenate their attributes. they're exposed through the root of the library: `look.disp_attrib`
+`disp_attrib` objects are the underlying objects that control the most part of the library. they can be added to strings or other disp_attribs to concatenate their attributes.
+
+### `look.disp_attrib`
+
+exposes the `disp_attrib` class.
 
 ### `disp_attrib.new(a)`/`disp_attrib(a)`
 
